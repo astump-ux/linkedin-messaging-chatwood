@@ -7,13 +7,31 @@ alwaysApply: true
 Last-Updated: 2025-06-07
 
 ## Project Goal
-e.g. Build an enterprise ready platform that allows users to build and launch websites
+This project is an event-driven, multi-channel recruitment communication middleware. It ingests candidate communication streams across 5 channels (4 LinkedIn Recruiter profiles via Unipile API and 1 Teamtailor ATS instance via Teamtailor API/Webhooks), processes incoming candidate messages asynchronously using an AI layer, generates contextual next-step response proposals, and feeds everything into a self-hosted Chatwoot instance.
+The central inbox interface runs on Chatwoot Community Edition (deployed via Docker) utilizing API Channels. The custom middleware runs serverlessly on Vercel backed by Supabase/Neon (Postgres + pgvector), Upstash Redis, and QStash/Inngest.
 
 ## Tech Stack
-- **Language(s):** e.g TypeScript , Javascript
-- **Framework(s):** e.g. Nuxt.js, Encore TS, Vue.js
-- **Build / Tooling:** e.g. pnpm, Turborepo, docker
-- **Monorepo Structure:** e.g Turborepo-managed workspace with apps/frontend and apps/backend
+Central Inbox UI: Chatwoot Community Edition (Self-Hosted via Docker Compose)   
+
+Middleware Runtime & Hosting: Vercel Serverless Functions (Node.js / Next.js Route Handlers)
+
+Repository & CI/CD: GitHub
+
+External APIs:
+
+ConnectSafely.ai (LinkedIn account messaging & lifecycle)
+
+Teamtailor API & Company Webhooks (ATS candidate profiles & messages)
+
+Chatwoot Application REST API (Contacts, Conversations, Messages, Private Notes)   
+
+Database & Vector Store: Neon (PostgreSQL with pgvector for candidate history & RAG)
+
+Cache & Rate Limiting: Upstash Redis (REST-based client for serverless execution)
+
+Async Job Queue: Upstash QStash or Inngest (prevents Vercel serverless HTTP timeouts)
+
+AI Orchestration: main: qwen/qwen3-coder-next / on demand: deepseek/deepseek-r1
 
 ## Critical Patterns & Conventions
 - When ever possible recommend building an AI-First solution, where solution uses an AI to make the user experience easy and streamlines. 
@@ -35,7 +53,7 @@ e.g. Build an enterprise ready platform that allows users to build and launch we
 - Keep code DRY (Don't Repeat Yourself) by abstracting reusable logic into functions or modules.
 
 ## Constraints
-- You have a limited context window (Claude's limitation).
+- You have a limited context window .
 - You can make up to 25 tool calls per turn in Agent Composer mode.
 - Adhere to the "Cursor AI Operating Instructions" provided separately.
 - Prioritize code quality, maintainability, and security.
